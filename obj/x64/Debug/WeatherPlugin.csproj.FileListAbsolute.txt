@@ -1,0 +1,6 @@
+C:\Users\cperr\Source\Repos\rainmeter-plugin-sdk\C#\PluginEmpty\obj\x64\Debug\WeatherPlugin.csproj.AssemblyReference.cache
+C:\Users\cperr\Source\Repos\rainmeter-plugin-sdk\C#\PluginEmpty\obj\x64\Debug\WeatherPlugin.csproj.CoreCompileInputs.cache
+C:\Users\cperr\Source\Repos\rainmeter-plugin-sdk\C#\PluginEmpty\x64\Debug\WeatherApiPlugin.dll
+C:\Users\cperr\Source\Repos\rainmeter-plugin-sdk\C#\PluginEmpty\x64\Debug\WeatherApiPlugin.pdb
+C:\Users\cperr\Source\Repos\rainmeter-plugin-sdk\C#\PluginEmpty\obj\x64\Debug\WeatherApiPlugin.dll
+C:\Users\cperr\Source\Repos\rainmeter-plugin-sdk\C#\PluginEmpty\obj\x64\Debug\WeatherApiPlugin.pdb
