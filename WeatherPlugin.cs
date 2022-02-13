@@ -205,7 +205,7 @@ namespace PluginEmpty
         //}
 
         [DllExport]
-        public static IntPtr func(IntPtr data, int argc,
+        public static IntPtr getValue(IntPtr data, int argc,
             [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPWStr, SizeParamIndex = 1)] string[] argv)
         {
             Measure measure = (Measure)data;
