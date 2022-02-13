@@ -28,6 +28,7 @@ namespace PluginEmpty
         public double lat;
         public String type;
         public String units;
+        public String data;
     }
     public class Plugin
     {
@@ -40,6 +41,12 @@ namespace PluginEmpty
         }
         public class Weather
         {
+            public String main { get; set; }
+            public String description { get; set; }
+        }
+        public class MainJson
+        {
+            public Weather[] weather{get; set;}
             public Main main { get; set; }
         }
         [DllExport]
@@ -86,22 +93,34 @@ namespace PluginEmpty
             try
             {
                 String json = new WebClient().DownloadString("https://" + $"api.openweathermap.org/data/2.5/weather?lat={measure.lat}&lon={measure.lon}&appid={measure.apiKey}");
-                Weather weather = (new JavaScriptSerializer()).Deserialize<Weather>(json);
-                if (measure.type == "temp" || measure.type == "")
+                MainJson weather = (new JavaScriptSerializer()).Deserialize<MainJson>(json);
+                if (measure.type.Equals("temp") || measure.type.Equals(""))
                 {
+                    measure.data = convert(weather.main.temp, measure.units).ToString();
                     return convert(weather.main.temp, measure.units);
                 }
-                if (measure.type == "temp_min")
+                if (measure.type.Equals("temp_min"))
                 {
+                    measure.data = convert(weather.main.temp_min, measure.units).ToString();
                     return convert(weather.main.temp_min, measure.units);
                 }
-                if (measure.type == "temp_max")
+                if (measure.type.Equals("temp_max"))
                 {
+                    measure.data = convert(weather.main.temp_max, measure.units).ToString();
                     return convert(weather.main.temp_max, measure.units);
                 }
-                if (measure.type == "humidity")
+                if (measure.type.Equals("humidity"))
                 {
+                    measure.data =weather.main.humidity.ToString();
                     return weather.main.humidity;
+                }
+                if (measure.type.Equals("condition"))
+                {
+                    measure.data = weather.weather[0].main;
+                }
+                if (measure.type.Equals("description"))
+                {
+                    measure.data = weather.weather[0].description;
                 }
                 return convert(weather.main.temp, measure.units);
             }
@@ -129,20 +148,18 @@ namespace PluginEmpty
         {
             return val - 273.15;
         }
-        //[DllExport]
-        //public static IntPtr GetString(IntPtr data)
-        //{
-        //    Measure measure = (Measure)data;
-        //    if (measure.buffer != IntPtr.Zero)
-        //    {
-        //        Marshal.FreeHGlobal(measure.buffer);
-        //        measure.buffer = IntPtr.Zero;
-        //    }
-        //
-        //    measure.buffer = Marshal.StringToHGlobalUni("");
-        //
-        //    return measure.buffer;
-        //}
+        [DllExport]
+        public static IntPtr GetString(IntPtr data)
+        {
+            Measure measure = (Measure)data;
+            if (measure.buffer != IntPtr.Zero)
+            {
+                Marshal.FreeHGlobal(measure.buffer);
+                measure.buffer = IntPtr.Zero;
+            }
+        
+            return Marshal.StringToHGlobalUni(measure.data);
+        }
 
         //[DllExport]
         //public static void ExecuteBang(IntPtr data, [MarshalAs(UnmanagedType.LPWStr)]String args)
