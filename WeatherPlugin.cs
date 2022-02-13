@@ -14,7 +14,24 @@ using Rainmeter;
 
 namespace PluginEmpty
 {
-
+    public class Main
+    {
+        public double temp { get; set; }
+        public double temp_max { get; set; }
+        public double temp_min { get; set; }
+        public double humidity { get; set; }
+    }
+    public class Weather
+    {
+        public String main { get; set; }
+        public String description { get; set; }
+        public String icon { get; set; }
+    }
+    public class MainJson
+    {
+        public Weather[] weather { get; set; }
+        public Main main { get; set; }
+    }
     class Measure
     {
         static public implicit operator Measure(IntPtr data)
@@ -23,6 +40,7 @@ namespace PluginEmpty
         }
 
         public IntPtr buffer = IntPtr.Zero;
+        public MainJson mainJson;
         public String apiKey;
         public double lon;
         public double lat;
@@ -32,34 +50,52 @@ namespace PluginEmpty
     }
     public class Plugin
     {
-        public class Main
-        {
-            public double temp { get; set; }
-            public double temp_max { get; set; }
-            public double temp_min { get; set; }
-            public double humidity { get; set; }
-        }
-        public class Weather
-        {
-            public String main { get; set; }
-            public String description { get; set; }
-        }
-        public class MainJson
-        {
-            public Weather[] weather{get; set;}
-            public Main main { get; set; }
-        }
+        
         [DllExport]
         public static void Initialize(ref IntPtr data, IntPtr rm)
         {
             data = GCHandle.ToIntPtr(GCHandle.Alloc(new Measure()));
             Rainmeter.API api = (Rainmeter.API)rm;
+            Measure measure = (Measure)data;
 
-            ((Measure)data).apiKey = api.ReadString("key", "");
-            ((Measure)data).lon = api.ReadDouble("longitude", 0.0);
-            ((Measure)data).lat = api.ReadDouble("latitude", 0.0);
-            ((Measure)data).type = api.ReadString("type", "");
-            ((Measure)data).units = api.ReadString("units", "");
+            measure.apiKey = api.ReadString("key", "");
+            measure.lon = api.ReadDouble("longitude", 0.0);
+            measure.lat = api.ReadDouble("latitude", 0.0);
+            measure.type = api.ReadString("type", "");
+            measure.units = api.ReadString("units", "");
+            try
+            {
+                String json = new WebClient().DownloadString("https://" + $"api.openweathermap.org/data/2.5/weather?lat={measure.lat}&lon={measure.lon}&appid={measure.apiKey}");
+                MainJson weather = (new JavaScriptSerializer()).Deserialize<MainJson>(json);
+                measure.mainJson = weather;
+                if (measure.type.Equals("temp") || measure.type.Equals(""))
+                {
+                    measure.data = convert(weather.main.temp, measure.units).ToString();
+                }
+                if (measure.type.Equals("temp_min"))
+                {
+                    measure.data = convert(weather.main.temp_min, measure.units).ToString();
+                }
+                if (measure.type.Equals("temp_max"))
+                {
+                    measure.data = convert(weather.main.temp_max, measure.units).ToString();
+                }
+                if (measure.type.Equals("humidity"))
+                {
+                    measure.data = weather.main.humidity.ToString();
+                }
+                if (measure.type.Equals("condition"))
+                {
+                    measure.data = weather.weather[0].main;
+                }
+                if (measure.type.Equals("description"))
+                {
+                    measure.data = weather.weather[0].description;
+                }
+            }
+            catch (Exception e)
+            {
+            }
         }
 
         [DllExport]
@@ -94,6 +130,7 @@ namespace PluginEmpty
             {
                 String json = new WebClient().DownloadString("https://" + $"api.openweathermap.org/data/2.5/weather?lat={measure.lat}&lon={measure.lon}&appid={measure.apiKey}");
                 MainJson weather = (new JavaScriptSerializer()).Deserialize<MainJson>(json);
+                measure.mainJson = weather;
                 if (measure.type.Equals("temp") || measure.type.Equals(""))
                 {
                     measure.data = convert(weather.main.temp, measure.units).ToString();
@@ -111,7 +148,7 @@ namespace PluginEmpty
                 }
                 if (measure.type.Equals("humidity"))
                 {
-                    measure.data =weather.main.humidity.ToString();
+                    measure.data = weather.main.humidity.ToString();
                     return weather.main.humidity;
                 }
                 if (measure.type.Equals("condition"))
@@ -133,11 +170,11 @@ namespace PluginEmpty
         {
             if (units.ToLower().Equals("c"))
             {
-                return toC(val);
+                return Math.Round(toC(val));
             }
             else
             {
-                return toF(val);
+                return Math.Round(toF(val));
             }
         }
         public static double toF(double val)
@@ -157,7 +194,7 @@ namespace PluginEmpty
                 Marshal.FreeHGlobal(measure.buffer);
                 measure.buffer = IntPtr.Zero;
             }
-        
+
             return Marshal.StringToHGlobalUni(measure.data);
         }
 
@@ -167,21 +204,45 @@ namespace PluginEmpty
         //    Measure measure = (Measure)data;
         //}
 
-        //[DllExport]
-        //public static IntPtr (IntPtr data, int argc,
-        //    [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPWStr, SizeParamIndex = 1)] string[] argv)
-        //{
-        //    Measure measure = (Measure)data;
-        //    if (measure.buffer != IntPtr.Zero)
-        //    {
-        //        Marshal.FreeHGlobal(measure.buffer);
-        //        measure.buffer = IntPtr.Zero;
-        //    }
-        //
-        //    measure.buffer = Marshal.StringToHGlobalUni("");
-        //
-        //    return measure.buffer;
-        //}
+        [DllExport]
+        public static IntPtr func(IntPtr data, int argc,
+            [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPWStr, SizeParamIndex = 1)] string[] argv)
+        {
+            Measure measure = (Measure)data;
+            string outVal = "";
+            if (argv[0].Equals("temp") || argv[0].Equals(""))
+            {
+                outVal = convert(measure.mainJson.main.temp, measure.units).ToString();
+            }
+            if (argv[0].Equals("temp_min"))
+            {
+                outVal = convert(measure.mainJson.main.temp_min, measure.units).ToString();
+            }
+            if (argv[0].Equals("temp_max"))
+            {
+                outVal = convert(measure.mainJson.main.temp_max, measure.units).ToString();
+            }
+            if (argv[0].Equals("humidity"))
+            {
+                outVal = measure.mainJson.main.humidity.ToString();
+            }
+            if (argv[0].Equals("condition"))
+            {
+                outVal = measure.mainJson.weather[0].main;
+            }
+            if (argv[0].Equals("description"))
+            {
+                outVal = measure.mainJson.weather[0].description;
+            }
+            if (argv[0].Equals("iconUrl"))
+            {
+                outVal = "http://" + $"openweathermap.org/img/wn/{measure.mainJson.weather[0].icon}@2x.png";
+            }
+            if (argv[0].Equals("icon"))
+            {
+                outVal = measure.mainJson.weather[0].icon;
+            }
+            return Marshal.StringToHGlobalUni(outVal);
+        }
     }
 }
-
