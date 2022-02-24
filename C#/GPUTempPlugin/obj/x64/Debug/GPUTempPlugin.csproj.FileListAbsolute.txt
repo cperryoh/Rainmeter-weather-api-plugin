@@ -1,0 +1,7 @@
+C:\Users\cperr\source\repos\rainmeter-plugin-sdk\C#\GPUTempPlugin\obj\x64\Debug\GPUTempPlugin.csproj.AssemblyReference.cache
+C:\Users\cperr\source\repos\rainmeter-plugin-sdk\C#\GPUTempPlugin\obj\x64\Debug\GPUTempPlugin.csproj.CoreCompileInputs.cache
+C:\Users\cperr\source\repos\rainmeter-plugin-sdk\C#\GPUTempPlugin\x64\Debug\GPUTempPlugin.dll
+C:\Users\cperr\source\repos\rainmeter-plugin-sdk\C#\GPUTempPlugin\x64\Debug\GPUTempPlugin.pdb
+C:\Users\cperr\source\repos\rainmeter-plugin-sdk\C#\GPUTempPlugin\obj\x64\Debug\GPUTempPlugin.dll
+C:\Users\cperr\source\repos\rainmeter-plugin-sdk\C#\GPUTempPlugin\obj\x64\Debug\GPUTempPlugin.pdb
+C:\Users\cperr\source\repos\rainmeter-plugin-sdk\C#\GPUTempPlugin\obj\x64\Debug\GPUTempPlugin.csproj.Fody.CopyLocal.cache
