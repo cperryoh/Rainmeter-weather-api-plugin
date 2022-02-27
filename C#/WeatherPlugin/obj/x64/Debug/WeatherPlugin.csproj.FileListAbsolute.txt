@@ -11,3 +11,10 @@ C:\Users\cperr\source\repos\rainmeter-plugin-sdk\C#\WeatherPlugin\obj\x64\Debug\
 C:\Users\cperr\source\repos\rainmeter-plugin-sdk\C#\WeatherPlugin\obj\x64\Debug\WeatherPlugin.csproj.Fody.CopyLocal.cache
 C:\Users\cperr\source\repos\rainmeter-plugin-sdk\C#\WeatherPlugin\obj\x64\Debug\WeatherApiPlugin.dll
 C:\Users\cperr\source\repos\rainmeter-plugin-sdk\C#\WeatherPlugin\obj\x64\Debug\WeatherApiPlugin.pdb
+C:\Users\perryca\Source\Repos\Rainmeter-weather-api-plugin\C#\WeatherPlugin\x64\Debug\WeatherApiPlugin.dll
+C:\Users\perryca\Source\Repos\Rainmeter-weather-api-plugin\C#\WeatherPlugin\x64\Debug\WeatherApiPlugin.pdb
+C:\Users\perryca\Source\Repos\Rainmeter-weather-api-plugin\C#\WeatherPlugin\obj\x64\Debug\WeatherPlugin.csproj.AssemblyReference.cache
+C:\Users\perryca\Source\Repos\Rainmeter-weather-api-plugin\C#\WeatherPlugin\obj\x64\Debug\WeatherPlugin.csproj.CoreCompileInputs.cache
+C:\Users\perryca\Source\Repos\Rainmeter-weather-api-plugin\C#\WeatherPlugin\obj\x64\Debug\WeatherPlugin.csproj.Fody.CopyLocal.cache
+C:\Users\perryca\Source\Repos\Rainmeter-weather-api-plugin\C#\WeatherPlugin\obj\x64\Debug\WeatherApiPlugin.dll
+C:\Users\perryca\Source\Repos\Rainmeter-weather-api-plugin\C#\WeatherPlugin\obj\x64\Debug\WeatherApiPlugin.pdb
