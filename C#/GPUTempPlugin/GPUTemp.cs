@@ -24,7 +24,6 @@ namespace GPUTemp
         {
             return (Measure)GCHandle.FromIntPtr(data).Target;
         }
-        public String source;
         public IHardware gpu;
         public ISensor gpuSens;
         public IntPtr buffer;
@@ -38,7 +37,6 @@ namespace GPUTemp
             data = GCHandle.ToIntPtr(GCHandle.Alloc(new Measure()));
             Rainmeter.API api = (Rainmeter.API)rm;
             Measure measure = (Measure)data;
-            measure.source=api.ReadString("source", "gpu");
             measure.computer = new Computer();
             measure.computer.CPUEnabled = true;
             measure.computer.GPUEnabled = true;
@@ -103,11 +101,6 @@ namespace GPUTemp
         public static double Update(IntPtr data)
         {
             Measure measure = (Measure)data;
-            if (measure.source.Equals("gpu"))
-            {
-                measure.gpu.Update();
-                return(double) measure.gpuSens.Value;
-            }
             measure.gpu.Update();
             return (double)measure.gpuSens.Value;
 

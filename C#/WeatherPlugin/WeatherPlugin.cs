@@ -41,6 +41,7 @@ namespace PluginEmpty
 
         public IntPtr buffer = IntPtr.Zero;
         public MainJson mainJson;
+        public API api;
         public String apiKey;
         public double lon;
         public double lat;
@@ -63,6 +64,9 @@ namespace PluginEmpty
             measure.lat = api.ReadDouble("latitude", 0.0);
             measure.type = api.ReadString("type", "");
             measure.units = api.ReadString("units", "");
+            api.Log(API.LogType.Debug, "Skin loaded");
+
+            measure.api = api;
             try
             {
                 String json = new WebClient().DownloadString("https://" + $"api.openweathermap.org/data/2.5/weather?lat={measure.lat}&lon={measure.lon}&appid={measure.apiKey}");
@@ -71,30 +75,38 @@ namespace PluginEmpty
                 if (measure.type.Equals("temp") || measure.type.Equals(""))
                 {
                     measure.data = convert(weather.main.temp, measure.units).ToString();
+                    api.Log(API.LogType.Debug, "Skin getting temp");
                 }
                 if (measure.type.Equals("temp_min"))
                 {
                     measure.data = convert(weather.main.temp_min, measure.units).ToString();
+                    api.Log(API.LogType.Debug, "Skin getting temp_min");
                 }
                 if (measure.type.Equals("temp_max"))
                 {
                     measure.data = convert(weather.main.temp_max, measure.units).ToString();
+                    api.Log(API.LogType.Debug, "Skin getting temp_man");
                 }
                 if (measure.type.Equals("humidity"))
                 {
                     measure.data = weather.main.humidity.ToString();
+                    api.Log(API.LogType.Debug, "Skin getting humidity");
                 }
                 if (measure.type.Equals("condition"))
                 {
                     measure.data = weather.weather[0].main;
+                    api.Log(API.LogType.Debug, "Skin getting condition");
                 }
                 if (measure.type.Equals("description"))
                 {
                     measure.data = weather.weather[0].description;
+                    api.Log(API.LogType.Debug, "Skin getting description");
                 }
             }
             catch (Exception e)
             {
+                api.Log(API.LogType.Error, "Skin failed to load");
+                api.Log(API.LogType.Error, e.Message);
             }
         }
 
@@ -116,9 +128,10 @@ namespace PluginEmpty
             Rainmeter.API api = (Rainmeter.API)rm;
             measure.apiKey = api.ReadString("key", "");
             measure.lon = api.ReadDouble("longitude", 0.0);
-            measure.lat = Double.Parse(api.ReadString("latitude", "0"));
+            measure.lat = api.ReadDouble("latitude", 0.0);
             measure.type = api.ReadString("type", "");
             measure.units = api.ReadString("units", "f");
+            api.Log(API.LogType.Debug, "Skin reloaded");
         }
 
         [DllExport]
@@ -210,6 +223,7 @@ namespace PluginEmpty
         {
             Measure measure = (Measure)data;
             string outVal = "";
+            measure.api.Log(API.LogType.Debug,"Running get value");
             if (argv[0].Equals("temp") || argv[0].Equals(""))
             {
                 outVal = convert(measure.mainJson.main.temp, measure.units).ToString();
@@ -242,6 +256,7 @@ namespace PluginEmpty
             {
                 outVal = measure.mainJson.weather[0].icon;
             }
+            measure.api.Log(API.LogType.Debug, $"Returning {outVal}");
             return Marshal.StringToHGlobalUni(outVal);
         }
     }
