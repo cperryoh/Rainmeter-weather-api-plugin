@@ -1,0 +1,5 @@
+costura.costura.dll.compressed|5.7.0.0|Costura, Version=5.7.0.0, Culture=neutral, PublicKeyToken=null|Costura.dll|F1F25C01F6ACF33BDD62C4F82D3EF078E76F0906|4608
+costura.costura.pdb.compressed|||Costura.pdb|6C6000A5EAF8579850AB82A89BD6268776EB51AD|2608
+costura.htmlagilitypack.dll.compressed|1.11.43.0|HtmlAgilityPack, Version=1.11.43.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a|HtmlAgilityPack.dll|036DD1B06F203B0C3FB5CACD9A27A0D6F7867A40|168960
+costura.htmlagilitypack.pdb.compressed|||HtmlAgilityPack.pdb|47FBB33E23C5559681D5AC6A6BD5F04AF4D481B9|318976
+costura.system.runtime.interopservices.runtimeinformation.dll.compressed|4.0.1.0|System.Runtime.InteropServices.RuntimeInformation, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a|System.Runtime.InteropServices.RuntimeInformation.dll|4E490D7EC139A6CDE53E3932D3122A48AA379904|33256

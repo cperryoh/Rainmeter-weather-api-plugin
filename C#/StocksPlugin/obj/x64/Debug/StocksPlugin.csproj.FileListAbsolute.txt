@@ -1,0 +1,8 @@
+C:\Users\cperr\source\repos\rainmeter-plugin-sdk\C#\StocksPlugin\x64\Debug\WeatherApiPlugin.dll
+C:\Users\cperr\source\repos\rainmeter-plugin-sdk\C#\StocksPlugin\x64\Debug\WeatherApiPlugin.pdb
+C:\Users\cperr\source\repos\rainmeter-plugin-sdk\C#\StocksPlugin\x64\Debug\HtmlAgilityPack.xml
+C:\Users\cperr\source\repos\rainmeter-plugin-sdk\C#\StocksPlugin\obj\x64\Debug\StocksPlugin.csproj.CoreCompileInputs.cache
+C:\Users\cperr\source\repos\rainmeter-plugin-sdk\C#\StocksPlugin\obj\x64\Debug\StocksPlugin.csproj.Fody.CopyLocal.cache
+C:\Users\cperr\source\repos\rainmeter-plugin-sdk\C#\StocksPlugin\obj\x64\Debug\StocksPlugin.csproj.CopyComplete
+C:\Users\cperr\source\repos\rainmeter-plugin-sdk\C#\StocksPlugin\obj\x64\Debug\WeatherApiPlugin.dll
+C:\Users\cperr\source\repos\rainmeter-plugin-sdk\C#\StocksPlugin\obj\x64\Debug\WeatherApiPlugin.pdb

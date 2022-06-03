@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeatherPlugin", "WeatherPlu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GPUTempPlugin", "GPUTempPlugin\GPUTempPlugin.csproj", "{69CB9D68-95E7-4708-AEF9-4DB0416FF6E5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StocksPlugin", "StocksPlugin\StocksPlugin.csproj", "{59F89353-F2F3-459B-96F4-EC6CF273B1D5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -31,6 +33,14 @@ Global
 		{69CB9D68-95E7-4708-AEF9-4DB0416FF6E5}.Release|x64.Build.0 = Release|x64
 		{69CB9D68-95E7-4708-AEF9-4DB0416FF6E5}.Release|x86.ActiveCfg = Release|x86
 		{69CB9D68-95E7-4708-AEF9-4DB0416FF6E5}.Release|x86.Build.0 = Release|x86
+		{59F89353-F2F3-459B-96F4-EC6CF273B1D5}.Debug|x64.ActiveCfg = Debug|x64
+		{59F89353-F2F3-459B-96F4-EC6CF273B1D5}.Debug|x64.Build.0 = Debug|x64
+		{59F89353-F2F3-459B-96F4-EC6CF273B1D5}.Debug|x86.ActiveCfg = Debug|x86
+		{59F89353-F2F3-459B-96F4-EC6CF273B1D5}.Debug|x86.Build.0 = Debug|x86
+		{59F89353-F2F3-459B-96F4-EC6CF273B1D5}.Release|x64.ActiveCfg = Release|x64
+		{59F89353-F2F3-459B-96F4-EC6CF273B1D5}.Release|x64.Build.0 = Release|x64
+		{59F89353-F2F3-459B-96F4-EC6CF273B1D5}.Release|x86.ActiveCfg = Release|x86
+		{59F89353-F2F3-459B-96F4-EC6CF273B1D5}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
