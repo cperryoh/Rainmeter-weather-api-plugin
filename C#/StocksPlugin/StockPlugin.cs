@@ -27,7 +27,6 @@ namespace PluginEmpty
         public double price;
         public String exchange;
         public String data;
-        public API api;
         public String type;
         public String ticker;
         public IntPtr buffer = IntPtr.Zero;
@@ -43,27 +42,20 @@ namespace PluginEmpty
             Measure measure = (Measure)data;
             measure.ticker = api.ReadString("ticker", "AMD").ToUpper();
             measure.type = api.ReadString("type", "price").ToLower();
-            measure.api = api;
+            measure.exchange = api.ReadString("exchange", "NASDAQ").ToUpper();
         }
         public static Measure updatePrice(Measure measure)
         {
-            try
-            {
-                HtmlAgilityPack.HtmlWeb web = new HtmlWeb();
-                HtmlAgilityPack.HtmlDocument doc = web.Load("https" + $"://www.marketwatch.com/investing/stock/{measure.ticker}");
-                HtmlNode node = doc.DocumentNode;
-                node = node.SelectSingleNode("//div[@class='intraday__data']");
-                String price = node.SelectSingleNode("//h2[@class='intraday__price ']").InnerText;
-                String change = node.SelectSingleNode("//span[@class='change--percent--q']").InnerText;
-                double priceNum = Double.Parse(price.Replace("\n", "").Replace("\r", "").Replace(" ", "").Replace("$", ""));
-                double changeNum = Double.Parse(change.Replace("%", ""));
-                measure.price = priceNum;
-                measure.percentChange = changeNum;
-
-            }catch(Exception e)
-            {
-                measure.api.Log(API.LogType.Error, e.Message);
-            }
+            HtmlAgilityPack.HtmlWeb web = new HtmlWeb();
+            String ticker = "AMD";
+            HtmlAgilityPack.HtmlDocument doc = web.Load("https:" + $"//www.marketwatch.com/investing/stock/{ticker}");
+            HtmlNode node = doc.DocumentNode;
+            HtmlNode pricenode = node.SelectSingleNode("//*[@id='maincontent']/div[2]/div[3]/div/div[2]/h2/bg-quote");
+            double price = Double.Parse(pricenode.InnerText);
+            String change = node.SelectSingleNode("//*[@id='maincontent']/div[2]/div[3]/div/div[2]/bg-quote/span[2]/bg-quote").InnerText;
+            change = change.Replace("(", "").Replace(")", "").Replace("+", "").Replace("%", "");
+            measure.percentChange = Double.Parse(change);
+            measure.price = price;
             return measure;
         }
         [DllExport]
@@ -93,7 +85,7 @@ namespace PluginEmpty
             measure = updatePrice(measure);
             if (measure.type.Equals("price"))
             {
-                return measure.price;
+                return Math.Round(measure.price, 2);
             }
             else if (measure.type.Equals("percentchange"))
             {
@@ -108,7 +100,7 @@ namespace PluginEmpty
             double dataOut = -1.0;
             if (argv[0].Equals("price"))
             {
-                dataOut = measure.price;
+                dataOut = Math.Round(measure.price,2);
             }
             else if (argv[0].ToLower().Equals("percentchange"))
             {
