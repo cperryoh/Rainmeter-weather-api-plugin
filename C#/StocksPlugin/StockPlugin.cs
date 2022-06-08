@@ -47,10 +47,12 @@ namespace PluginEmpty
         public static Measure updatePrice(Measure measure)
         {
             HtmlAgilityPack.HtmlWeb web = new HtmlWeb();
-            HtmlAgilityPack.HtmlDocument doc = web.Load("https" + $"://www.google.com/finance/quote/{measure.ticker}:{measure.exchange}");
+            String ticker = "AMD";
+            HtmlAgilityPack.HtmlDocument doc = web.Load("https:" + $"//www.marketwatch.com/investing/stock/{ticker}");
             HtmlNode node = doc.DocumentNode;
-            double price = node.SelectSingleNode("//*[@data-last-price]").GetAttributeValue("data-last-price", -1.0);
-            String change = node.SelectSingleNode("//*[@data-multiplier-for-price-change]").InnerText;
+            HtmlNode pricenode = node.SelectSingleNode("//*[@id='maincontent']/div[2]/div[3]/div/div[2]/h2/bg-quote");
+            double price = Double.Parse(pricenode.InnerText);
+            String change = node.SelectSingleNode("//*[@id='maincontent']/div[2]/div[3]/div/div[2]/bg-quote/span[2]/bg-quote").InnerText;
             change = change.Replace("(", "").Replace(")", "").Replace("+", "").Replace("%", "");
             measure.percentChange = Double.Parse(change);
             measure.price = price;

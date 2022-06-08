@@ -5,3 +5,10 @@ C:\Users\cperr\source\repos\rainmeter-plugin-sdk\C#\StocksPlugin\obj\x64\Release
 C:\Users\cperr\source\repos\rainmeter-plugin-sdk\C#\StocksPlugin\obj\x64\Release\StocksPlugin.csproj.CopyComplete
 C:\Users\cperr\source\repos\rainmeter-plugin-sdk\C#\StocksPlugin\x64\Release\StocksPlugin.dll
 C:\Users\cperr\source\repos\rainmeter-plugin-sdk\C#\StocksPlugin\obj\x64\Release\StocksPlugin.dll
+C:\Users\perryca\Source\Repos\cperryoh\Rainmeter-weather-api-plugin\C#\StocksPlugin\x64\Release\StocksPlugin.dll
+C:\Users\perryca\Source\Repos\cperryoh\Rainmeter-weather-api-plugin\C#\StocksPlugin\x64\Release\HtmlAgilityPack.xml
+C:\Users\perryca\Source\Repos\cperryoh\Rainmeter-weather-api-plugin\C#\StocksPlugin\obj\x64\Release\StocksPlugin.csproj.AssemblyReference.cache
+C:\Users\perryca\Source\Repos\cperryoh\Rainmeter-weather-api-plugin\C#\StocksPlugin\obj\x64\Release\StocksPlugin.csproj.CoreCompileInputs.cache
+C:\Users\perryca\Source\Repos\cperryoh\Rainmeter-weather-api-plugin\C#\StocksPlugin\obj\x64\Release\StocksPlugin.csproj.Fody.CopyLocal.cache
+C:\Users\perryca\Source\Repos\cperryoh\Rainmeter-weather-api-plugin\C#\StocksPlugin\obj\x64\Release\StocksPlugin.csproj.CopyComplete
+C:\Users\perryca\Source\Repos\cperryoh\Rainmeter-weather-api-plugin\C#\StocksPlugin\obj\x64\Release\StocksPlugin.dll
