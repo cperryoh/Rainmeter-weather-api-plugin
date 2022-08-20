@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Runtime.InteropServices;
 using System.Web.Script.Serialization;
@@ -15,7 +16,16 @@ using Rainmeter;
 
 namespace PluginEmpty
 {
-
+    public class Stock
+    {
+        public String ticker;
+        public double price;
+        public double change;
+        public Stock(String ticker)
+        {
+            this.ticker = ticker;
+        }
+    }
     public class Measure
     {
         static public implicit operator Measure(IntPtr data)
@@ -23,12 +33,11 @@ namespace PluginEmpty
             return (Measure)GCHandle.FromIntPtr(data).Target;
         }
 
-        public double percentChange;
-        public double price;
         public String exchange;
+        public API api;
         public String data;
+        public Dictionary<String,Stock> stocks;
         public String type;
-        public String ticker;
         public IntPtr buffer = IntPtr.Zero;
     }
     public class Plugin
@@ -40,13 +49,17 @@ namespace PluginEmpty
             data = GCHandle.ToIntPtr(GCHandle.Alloc(new Measure()));
             Rainmeter.API api = (Rainmeter.API)rm;
             Measure measure = (Measure)data;
-            measure.ticker = api.ReadString("ticker", "AMD").ToUpper();
+            measure.api = api;
+            measure.stocks = new Dictionary<string, Stock>();
+            measure.stocks.Add(api.ReadString("ticker1", "AMD").ToUpper(), new Stock(api.ReadString("ticker1", "AMD").ToUpper()));
+            measure.stocks.Add(api.ReadString("ticker2", "MSFT").ToUpper(), new Stock(api.ReadString("ticker2", "MSFT").ToUpper()));
+            measure.stocks.Add(api.ReadString("ticker3", "MSFT").ToUpper(), new Stock(api.ReadString("ticker3", "GME").ToUpper()));
             measure.type = api.ReadString("type", "price").ToLower();
-            measure.exchange = api.ReadString("exchange", "NASDAQ").ToUpper();
         }
-        public static Measure updatePrice(Measure measure)
+        public static Stock updatePrice(Stock stock) 
         {
             HtmlAgilityPack.HtmlWeb web = new HtmlWeb();
+            System.Net.ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls12;
             String ticker = "AMD";
             HtmlAgilityPack.HtmlDocument doc = web.Load("https:" + $"//www.marketwatch.com/investing/stock/{ticker}");
             HtmlNode node = doc.DocumentNode;
@@ -54,9 +67,9 @@ namespace PluginEmpty
             double price = Double.Parse(pricenode.InnerText);
             String change = node.SelectSingleNode("//*[@id='maincontent']/div[2]/div[3]/div/div[2]/bg-quote/span[2]/bg-quote").InnerText;
             change = change.Replace("(", "").Replace(")", "").Replace("+", "").Replace("%", "");
-            measure.percentChange = Double.Parse(change);
-            measure.price = price;
-            return measure;
+            stock.change = Double.Parse(change);
+            stock.price = price;
+            return stock;
         }
         [DllExport]
         public static void Finalize(IntPtr data)
@@ -74,39 +87,43 @@ namespace PluginEmpty
         {
             Measure measure = (Measure)data;
             Rainmeter.API api = (Rainmeter.API)rm;
-            measure.ticker = api.ReadString("ticker", "AMD").ToUpper();
-            measure.exchange = api.ReadString("exchange", "NASDAQ").ToUpper();
+            measure.stocks.Add(api.ReadString("ticker1", "AMD").ToUpper(), new Stock(api.ReadString("ticker1", "AMD").ToUpper()));
+            measure.stocks.Add(api.ReadString("ticker2", "MSFT").ToUpper(), new Stock(api.ReadString("ticker2", "MSFT").ToUpper()));
+            measure.stocks.Add(api.ReadString("ticker3", "MSFT").ToUpper(), new Stock(api.ReadString("ticker3", "GME").ToUpper()));
+            measure.type = api.ReadString("type", "price").ToLower();
         }
 
         [DllExport]
         public static double Update(IntPtr data)
         {
             Measure measure = (Measure)data;
-            measure = updatePrice(measure);
-            if (measure.type.Equals("price"))
+            try
             {
-                return Math.Round(measure.price, 2);
-            }
-            else if (measure.type.Equals("percentchange"))
+                foreach (String key in measure.stocks.Keys)
+                {
+                    Stock s = measure.stocks[key];
+                    measure.stocks[key] = updatePrice(s);
+                }
+            }catch(Exception e)
             {
-                return measure.percentChange;
+                measure.api.Log(API.LogType.Error, e.Message);
             }
-            return -1.0;
+            return -1;
         }
         [DllExport]
-        public static IntPtr getValue(IntPtr data, int argc, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPWStr, SizeParamIndex = 1)] string[] argv)
+        public static IntPtr getValue(IntPtr data, int argc, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPWStr, SizeParamIndex = 2)] string[] argv)
         {
             Measure measure = (Measure)data;
             double dataOut = -1.0;
-            if (argv[0].Equals("price"))
+            Stock s = measure.stocks[argv[0].ToUpper()];
+            if (argv[1].Equals("price"))
             {
-                dataOut = Math.Round(measure.price,2);
-            }
-            else if (argv[0].ToLower().Equals("percentchange"))
+                return Marshal.StringToHGlobalUni(s.price.ToString());
+            }else if (argv[1].ToLower().Equals("percenthange"))
             {
-                dataOut = measure.percentChange;
+                return Marshal.StringToHGlobalUni(s.change.ToString());
             }
-            return Marshal.StringToHGlobalUni(dataOut.ToString());
+            return Marshal.StringToHGlobalUni("no value");
         }
 
     }

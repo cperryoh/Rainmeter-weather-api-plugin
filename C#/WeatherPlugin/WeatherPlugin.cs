@@ -59,6 +59,8 @@ namespace PluginEmpty
             Rainmeter.API api = (Rainmeter.API)rm;
             Measure measure = (Measure)data;
 
+
+            //load inputs
             measure.apiKey = api.ReadString("key", "");
             measure.lon = api.ReadDouble("longitude", 0.0);
             measure.lat = api.ReadDouble("latitude", 0.0);
@@ -69,9 +71,13 @@ namespace PluginEmpty
             measure.api = api;
             try
             {
+
+                //get json from api
                 String json = new WebClient().DownloadString("https://" + $"api.openweathermap.org/data/2.5/weather?lat={measure.lat}&lon={measure.lon}&appid={measure.apiKey}");
                 MainJson weather = (new JavaScriptSerializer()).Deserialize<MainJson>(json);
                 measure.mainJson = weather;
+
+                //determain which object we are going to return
                 if (measure.type.Equals("temp") || measure.type.Equals(""))
                 {
                     measure.data = convert(weather.main.temp, measure.units).ToString();
